@@ -1,12 +1,6 @@
-import React from 'react'
-import { render } from 'react-dom'
-import './styles/index.css'
+import store from './store'
+import { selectSubreddit, fetchPosts } from './actions'
 import './index.html'
 
-const HelloWorld = props => <h1>Hello {props.name}!</h1>
-
-render(
-  <HelloWorld name="World" />,
-  document.getElementById('app')
-)
-
+store.dispatch(selectSubreddit('reactjs'))
+store.dispatch(fetchPosts('reactjs'))
