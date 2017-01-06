@@ -21,7 +21,7 @@ class PostList extends Component {
             <h3>{post.title} <em>({post.ups} upvotes)</em></h3>
             <em>By <strong>{post.author}</strong></em>
             <div>
-              <a target="_blank" href={`https://reddit.com${post.permalink}}`}>See the full story</a>
+              <a target="_blank" rel="noopener noreferrer" href={`https://reddit.com${post.permalink}}`}>See the full story</a>
             </div>
           </div>
         ))}
