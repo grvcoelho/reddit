@@ -27,14 +27,12 @@ export const receivePosts = (subreddit, json) => ({
   receivedAt: Date.now()
 })
 
-export const fetchPosts = (subreddit) => {
-  return function (dispatch) {
-    dispatch(requestPosts(subreddit))
+export const fetchPosts = subreddit => (dispatch) => {
+  dispatch(requestPosts(subreddit))
 
-    return fetch(`https://www.reddit.com/r/${subreddit}.json`)
-      .then(res => res.json())
-      .then(json => dispatch(receivePosts(subreddit, json)))
-  }
+  return fetch(`https://www.reddit.com/r/${subreddit}.json`)
+    .then(res => res.json())
+    .then(json => dispatch(receivePosts(subreddit, json)))
 }
 
 const shouldFetchPosts = (state, subreddit) => {

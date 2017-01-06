@@ -5,12 +5,6 @@ class PostList extends Component {
     posts: PropTypes.arrayOf(PropTypes.object)
   }
 
-  constructor (props) {
-    super(props)
-
-    console.log(props)
-  }
-
   getPostHash = post => `${post.title}${post.permalink}${post.author}`
 
   render = () => (
