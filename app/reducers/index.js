@@ -12,7 +12,7 @@ function errors (state = '', action) {
   const { error, payload } = action
 
   if (error) {
-    return payload
+    return payload.message
   }
 
   return state
