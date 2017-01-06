@@ -5,12 +5,14 @@ import reducers from '../reducers'
 
 const logger = createLogger()
 
+const middleware = [
+  thunk,
+  logger
+]
+
 const store = createStore(
   reducers,
-  applyMiddleware(
-    thunk,
-    logger
-  )
+  applyMiddleware(...middleware)
 )
 
 export default store
