@@ -8,6 +8,16 @@ import {
   POSTS_FAILURE
 } from '../actions'
 
+function errors (state = '', action) {
+  const { error, payload } = action
+
+  if (error) {
+    return payload
+  }
+
+  return state
+}
+
 function selectedSubreddit (state = 'reactjs', action) {
   const { type, payload } = action
 
@@ -50,6 +60,12 @@ function posts (state = {
         lastUpdated: action.receivedAt
       }
 
+    case POSTS_FAILURE:
+      return {
+        ...state,
+        isFetching: false
+      }
+
     default:
       return state
   }
@@ -62,6 +78,7 @@ function postsBySubreddit (state = {}, action) {
     case INVALIDATE_SUBREDDIT:
     case POSTS_REQUEST:
     case POSTS_SUCCESS:
+    case POSTS_FAILURE:
       console.info(state, payload)
       return {
         ...state,
@@ -74,6 +91,7 @@ function postsBySubreddit (state = {}, action) {
 }
 
 const reducers = combineReducers({
+  errors,
   selectedSubreddit,
   postsBySubreddit
 })
