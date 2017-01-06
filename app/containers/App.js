@@ -1,6 +1,10 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { selectSubreddit, fetchPostsIfNeeded } from '../actions'
+import {
+  selectSubreddit,
+  fetchPostsIfNeeded,
+  invalidateSubreddit
+} from '../actions'
 import PostList from '../components/PostList'
 import Search from '../components/Search'
 
@@ -30,6 +34,12 @@ class App extends Component {
     dispatch(selectSubreddit(subreddit))
   }
 
+  handleInvalidate = () => {
+    const { dispatch, selectedSubreddit } = this.props
+    dispatch(invalidateSubreddit(this.props.selectedSubreddit))
+    dispatch(fetchPostsIfNeeded(selectedSubreddit))
+  }
+
   render = () => (
     <div>
       <Search onSubmit={this.handleSubredditChange} />
@@ -37,6 +47,7 @@ class App extends Component {
       <div>
         <h2>Showing posts for: <em>{this.props.selectedSubreddit}</em></h2>
         <div>Last updated: <em>{this.props.lastUpdated}</em></div>
+        <button onClick={this.handleInvalidate}>invalidate</button>
       </div>
 
       {this.props.isFetching ? (
