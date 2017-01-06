@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { selectSubreddit, fetchPosts } from '../actions'
+import { selectSubreddit, fetchPostsIfNeeded } from '../actions'
 import PostList from '../components/PostList'
 import Search from '../components/Search'
 
@@ -15,20 +15,18 @@ class App extends Component {
 
   componentDidMount = () => {
     const { dispatch, selectedSubreddit } = this.props
-
-    dispatch(fetchPosts(selectedSubreddit))
+    dispatch(fetchPostsIfNeeded(selectedSubreddit))
   }
 
   componentWillReceiveProps = (nextProps) => {
     if (nextProps.selectedSubreddit !== this.props.selectedSubreddit) {
       const { dispatch, selectedSubreddit } = nextProps
-      dispatch(fetchPosts(selectedSubreddit))
+      dispatch(fetchPostsIfNeeded(selectedSubreddit))
     }
   }
 
   handleSubredditChange = (subreddit) => {
     const { dispatch } = this.props
-
     dispatch(selectSubreddit(subreddit))
   }
 
