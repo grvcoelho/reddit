@@ -1,6 +1,10 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 
 class Search extends Component {
+  static propTypes = {
+    onSubmit: PropTypes.func.isRequired
+  }
+
   state = {
     term: ''
   }
