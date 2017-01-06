@@ -47,7 +47,7 @@ class App extends Component {
       <div>
         <h2>Showing posts for: <em>{this.props.selectedSubreddit}</em></h2>
         <div>Last updated: <em>{this.props.lastUpdated}</em></div>
-        <button onClick={this.handleInvalidate}>invalidate</button>
+        <button onClick={this.handleInvalidate}>refresh</button>
       </div>
 
       {this.props.isFetching ? (
