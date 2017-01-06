@@ -10,6 +10,7 @@ import Search from '../components/Search'
 
 class App extends Component {
   static propTypes = {
+    errors: PropTypes.string,
     selectedSubreddit: PropTypes.string,
     posts: PropTypes.arrayOf(PropTypes.object),
     isFetching: PropTypes.bool,
@@ -50,6 +51,10 @@ class App extends Component {
         <button onClick={this.handleInvalidate}>refresh</button>
       </div>
 
+      {this.props.errors && (
+        <strong style={{ color: 'red ' }}>{this.props.errors}</strong>
+      )}
+
       {this.props.isFetching ? (
         <div>Looking for <strong>{this.props.selectedSubreddit}</strong> posts...</div>
       ) : (
@@ -60,7 +65,7 @@ class App extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { selectedSubreddit, postsBySubreddit } = state
+  const { errors, selectedSubreddit, postsBySubreddit } = state
 
   const {
     isFetching,
@@ -75,7 +80,8 @@ const mapStateToProps = (state) => {
     selectedSubreddit,
     isFetching,
     lastUpdated,
-    posts
+    posts,
+    errors
   }
 }
 

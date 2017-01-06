@@ -3,14 +3,27 @@ import { combineReducers } from 'redux'
 import {
   SELECT_SUBREDDIT,
   INVALIDATE_SUBREDDIT,
-  REQUEST_POSTS,
-  RECEIVE_POSTS
+  POSTS_REQUEST,
+  POSTS_SUCCESS,
+  POSTS_FAILURE
 } from '../actions'
 
+function errors (state = '', action) {
+  const { error, payload } = action
+
+  if (error) {
+    return payload.message
+  }
+
+  return state
+}
+
 function selectedSubreddit (state = 'reactjs', action) {
-  switch (action.type) {
+  const { type, payload } = action
+
+  switch (type) {
     case SELECT_SUBREDDIT:
-      return action.subreddit
+      return payload.subreddit
 
     default:
       return state
@@ -22,27 +35,35 @@ function posts (state = {
   didInvalidate: false,
   items: []
 }, action) {
-  switch (action.type) {
+  const { type, payload } = action
+
+  switch (type) {
     case INVALIDATE_SUBREDDIT:
       return {
         ...state,
         didInvalidate: true
       }
 
-    case REQUEST_POSTS:
+    case POSTS_REQUEST:
       return {
         ...state,
         isFetching: true,
         didInvalidate: false
       }
 
-    case RECEIVE_POSTS:
+    case POSTS_SUCCESS:
       return {
         ...state,
         isFetching: false,
         didInvalidate: false,
-        items: action.posts,
+        items: payload.posts,
         lastUpdated: action.receivedAt
+      }
+
+    case POSTS_FAILURE:
+      return {
+        ...state,
+        isFetching: false
       }
 
     default:
@@ -51,13 +72,17 @@ function posts (state = {
 }
 
 function postsBySubreddit (state = {}, action) {
-  switch (action.type) {
+  const { type, payload } = action
+
+  switch (type) {
     case INVALIDATE_SUBREDDIT:
-    case RECEIVE_POSTS:
-    case REQUEST_POSTS:
+    case POSTS_REQUEST:
+    case POSTS_SUCCESS:
+    case POSTS_FAILURE:
+      console.info(state, payload)
       return {
         ...state,
-        [action.subreddit]: posts(state[action.subreddit], action)
+        [payload.subreddit]: posts(state[payload.subreddit], action)
       }
 
     default:
@@ -66,6 +91,7 @@ function postsBySubreddit (state = {}, action) {
 }
 
 const reducers = combineReducers({
+  errors,
   selectedSubreddit,
   postsBySubreddit
 })

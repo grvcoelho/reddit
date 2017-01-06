@@ -2,37 +2,38 @@ import fetch from 'isomorphic-fetch'
 
 export const SELECT_SUBREDDIT = 'SELECT_SUBREDDIT'
 export const INVALIDATE_SUBREDDIT = 'INVALIDATE_SUBREDDIT'
-export const REQUEST_POSTS = 'REQUEST_POSTS'
-export const RECEIVE_POSTS = 'RECEIVE_POSTS'
+export const POSTS_REQUEST = 'POSTS_REQUEST'
+export const POSTS_SUCCESS = 'POSTS_SUCCESS'
+export const POSTS_FAILURE = 'POSTS_FAILURE'
 
 export const selectSubreddit = subreddit => ({
   type: SELECT_SUBREDDIT,
-  subreddit
+  payload: {
+    subreddit
+  }
 })
 
 export const invalidateSubreddit = subreddit => ({
   type: INVALIDATE_SUBREDDIT,
-  subreddit
+  payload: {
+    subreddit
+  }
 })
 
-export const requestPosts = subreddit => ({
-  type: REQUEST_POSTS,
-  subreddit
-})
-
-export const receivePosts = (subreddit, json) => ({
-  type: RECEIVE_POSTS,
-  subreddit,
-  posts: json.data.children.map(child => child.data),
-  receivedAt: Date.now()
+const actionCreator = (type, payload = {}, error = false) => ({
+  type,
+  payload,
+  error
 })
 
 export const fetchPosts = subreddit => (dispatch) => {
-  dispatch(requestPosts(subreddit))
+  dispatch(actionCreator(POSTS_REQUEST, { subreddit }))
 
-  return fetch(`https://www.reddit.com/r/${subreddit}.json`)
+  fetch(`https://www.reddit.com/r/${subreddit}.json`)
     .then(res => res.json())
-    .then(json => dispatch(receivePosts(subreddit, json)))
+    .then(json => json.data.children.map(child => child.data))
+    .then(posts => dispatch(actionCreator(POSTS_SUCCESS, { posts, subreddit })))
+    .catch(() => dispatch(actionCreator(POSTS_FAILURE, { message: 'There was an error fetching the posts!', subreddit }, true)))
 }
 
 const shouldFetchPosts = (state, subreddit) => {
