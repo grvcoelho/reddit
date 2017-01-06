@@ -1,6 +1,10 @@
-import store from './store'
-import { selectSubreddit, fetchPosts } from './actions'
+import React from 'react'
+import { render } from 'react-dom'
+import App from './components/App'
 import './index.html'
 
-store.dispatch(selectSubreddit('reactjs'))
-store.dispatch(fetchPosts('reactjs'))
+render(
+  <App />,
+  document.getElementById('app')
+)
+
