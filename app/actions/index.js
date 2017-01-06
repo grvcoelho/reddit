@@ -33,7 +33,7 @@ export const fetchPosts = subreddit => (dispatch) => {
     .then(res => res.json())
     .then(json => json.data.children.map(child => child.data))
     .then(posts => dispatch(actionCreator(POSTS_SUCCESS, { posts, subreddit })))
-    .catch(err => dispatch(actionCreator(POSTS_FAILURE, err, true)))
+    .catch(() => dispatch(actionCreator(POSTS_FAILURE, { message: 'There was an error fetching the posts!', subreddit }, true)))
 }
 
 const shouldFetchPosts = (state, subreddit) => {
