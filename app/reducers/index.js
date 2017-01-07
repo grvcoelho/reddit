@@ -84,7 +84,6 @@ function postsBySubreddit (state = {}, action) {
     case POSTS_REQUEST:
     case POSTS_SUCCESS:
     case POSTS_FAILURE:
-      console.info(state, payload)
       return {
         ...state,
         [payload.subreddit]: posts(state[payload.subreddit], action)
