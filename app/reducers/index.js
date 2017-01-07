@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
 
 import {
+  RESET_ERROR_MESSAGE,
   SELECT_SUBREDDIT,
   INVALIDATE_SUBREDDIT,
   POSTS_REQUEST,
@@ -8,8 +9,12 @@ import {
   POSTS_FAILURE
 } from '../actions'
 
-function errors (state = '', action) {
-  const { error, payload } = action
+function errorMessage (state = null, action) {
+  const { type, error, payload } = action
+
+  if (type === RESET_ERROR_MESSAGE) {
+    return null
+  }
 
   if (error) {
     return payload.message
@@ -79,7 +84,6 @@ function postsBySubreddit (state = {}, action) {
     case POSTS_REQUEST:
     case POSTS_SUCCESS:
     case POSTS_FAILURE:
-      console.info(state, payload)
       return {
         ...state,
         [payload.subreddit]: posts(state[payload.subreddit], action)
@@ -91,7 +95,7 @@ function postsBySubreddit (state = {}, action) {
 }
 
 const reducers = combineReducers({
-  errors,
+  errorMessage,
   selectedSubreddit,
   postsBySubreddit
 })
