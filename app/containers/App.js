@@ -8,6 +8,28 @@ import {
 import PostList from '../components/PostList'
 import Search from '../components/Search'
 
+const mapStateToProps = (state) => {
+  const { errorMessage, selectedSubreddit, postsBySubreddit } = state
+
+  const {
+    isFetching,
+    lastUpdated,
+    items: posts
+  } = postsBySubreddit[selectedSubreddit] || {
+    isFetching: true,
+    items: []
+  }
+
+  return {
+    selectedSubreddit,
+    isFetching,
+    lastUpdated,
+    posts,
+    errorMessage
+  }
+}
+
+@connect(mapStateToProps)
 class App extends Component {
   static propTypes = {
     errorMessage: PropTypes.string,
@@ -64,25 +86,4 @@ class App extends Component {
   )
 }
 
-const mapStateToProps = (state) => {
-  const { errorMessage, selectedSubreddit, postsBySubreddit } = state
-
-  const {
-    isFetching,
-    lastUpdated,
-    items: posts
-  } = postsBySubreddit[selectedSubreddit] || {
-    isFetching: true,
-    items: []
-  }
-
-  return {
-    selectedSubreddit,
-    isFetching,
-    lastUpdated,
-    posts,
-    errorMessage
-  }
-}
-
-export default connect(mapStateToProps)(App)
+export default App
