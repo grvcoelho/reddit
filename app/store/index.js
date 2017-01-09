@@ -12,12 +12,14 @@ const middleware = [
   logger
 ]
 
-const store = createStore(
+const configureStore = preloadedState => createStore(
   reducers,
+  preloadedState,
   compose(
     applyMiddleware(...middleware),
     devtools
   )
 )
 
-export default store
+export default configureStore
+

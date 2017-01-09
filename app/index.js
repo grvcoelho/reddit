@@ -1,8 +1,10 @@
 import React from 'react'
 import { render } from 'react-dom'
 import Root from './containers/Root'
-import store from './store'
+import configureStore from './store'
 import './index.html'
+
+const store = configureStore()
 
 render(
   <Root store={store} />,
