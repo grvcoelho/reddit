@@ -1,9 +1,11 @@
+import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
 import createLogger from 'redux-logger'
-import { createStore, applyMiddleware } from 'redux'
 import reducers from '../reducers'
+import DevTools from '../containers/DevTools'
 
 const logger = createLogger()
+const devtools = DevTools.instrument()
 
 const middleware = [
   thunk,
@@ -12,7 +14,10 @@ const middleware = [
 
 const store = createStore(
   reducers,
-  applyMiddleware(...middleware)
+  compose(
+    applyMiddleware(...middleware),
+    devtools
+  )
 )
 
 export default store
